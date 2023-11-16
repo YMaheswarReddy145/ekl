@@ -1,0 +1,34 @@
+Logstash is going to take the input form the file beat servers and send output to elastic search.
+so now we need to write some logstash configuration on the server to accept the input and store the output in elasticsearch
+
+1. Login in to the ELK instance.
+2. provide sudo -i command to become a root user
+3. give ls command to get the file list or else directly give the below command
+4.  cat /etc/logstash/conf.d/logstash.conf if we open this file we will have the below data
+     input {
+       beats {
+         port => 5044
+       }
+     }
+
+     output {
+       elasticsearch {
+         hosts => ["https://localhost:9200"]
+         index => "%{[@metadata][beat]}-%{[@metadata][version]}"
+         user => "elastic"
+         password => "REPLACE-YOUR_PASSWORD"
+         ssl_certificate_verification => false
+       }
+     }
+    Here we are accepting the input form beats with the port number of 5044.
+    The output information we are storing of elasticsearch and we have to provide the user and password to connect
+       provide the username and password from which we have taken copy of data after installing the ekl  and save the file.
+
+5. Once the above thing is completed restart the logstash with below command. here tail help to see the lof of logstash
+     systemctl restart logstash ; tail -f /var/log/logstash/logstash-plain.log
+
+6. Once the above thing is completed give ctrl+c to exit from it.
+
+7. now provide netstat -lntp and check the logs
+
+
