@@ -1,0 +1,130 @@
+ekl  installation can be done in 2 ways
+    1. Automated
+    2. Manually
+
+
+Now we see how to setup elk through Automation
+  1. First login to the shell using the ekl instance public address.
+  2. After login now give the command as sudo labauto
+  3. give 13 in select tool to select the elk
+  3. Now select the version you want and give that option number.
+  4. It will take some time to install once the installation is done. the important thing is to copy the security
+     autoconfiguration information.
+     --------------------------- Security autoconfiguration information ------------------------------
+     Authentication and authorization are enabled.
+     TLS for the transport and HTTP layers is enabled and configured.
+
+     The generated password for the elastic built-in superuser is : Vi6IIOEGA9n8AvyLf8oY
+
+     If this node should join an existing cluster, you can reconfigure this with
+     '/usr/share/elasticsearch/bin/elasticsearch-reconfigure-node --enrollment-token <token-here>'
+     after creating an enrollment token on your existing cluster.
+
+     You can complete the following actions at any time:
+
+     Reset the password of the elastic built-in superuser with
+     '/usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic'.
+
+     Generate an enrollment token for Kibana instances with
+      '/usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s kibana'.
+
+     Generate an enrollment token for Elasticsearch nodes with
+     '/usr/share/elasticsearch/bin/elasticsearch-create-enrollment-token -s node'.
+     -------------------------------------------------------------------------------------------------
+
+  5. now copy and paste the ip address in the browser and we don't hve to provide any port number because it consider 80 port.
+  6. now go the place where you copied and pasted the security autoconfiguration information and copy the generate
+     enrollment token for kibana instance command past it in the shell command line. now it provide a data copy
+     the data and paste it in the configuration page and select configure elastic once you selected it will open a
+     page and ask to enter the verification code.
+
+  7. To get the verification we have to provide the command in the shell that is present in the verification page.
+
+  8. Now if you give that command it won't open anything so what we can do is first find the verification code file
+               find / -name kibana-verification-code it will give you the file name.
+
+  9. Now copy the file name and paste it in the shell command and it will give a verification code and give that
+              verification code in the verified configuration page.
+
+  10. Once the above thing is done now it will open elastic page and provide the credentials, you can find the
+              username and password credentials in the doc which you have copied and pasted the things after installing.
+
+
+
+
+
+
+  Now we see how to setup elk through Manually
+    1. First login to the shell using the ekl instance public address.
+    2. now go to elastic.co website there we have a rpm which is repo file and give that repo file in the command
+       docs--> in Elastic Stack select installation and update guide --> Installing the Elastic Stack --> in Installation
+         order select Elastic search Install Instructions ---> select install elastic search with RPM
+       there we found command to install Manually
+        1. give these in the command line
+              rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+        2. Create a file called elasticsearch.repo in the /etc/yum.repos.d/ directory
+              vim etc/yum.repos.d/elasticsearch.repo
+                 paste the below content in that file and save it. to save the file press esc the give :wq the file will save
+
+                 [elasticsearch]
+                 name=Elasticsearch repository for 8.x packages
+                 baseurl=https://artifacts.elastic.co/packages/8.x/yum
+                 gpgcheck=1
+                 gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+                 enabled=1
+                 autorefresh=1
+                 type=rpm-md
+
+        3. Now give dnf install elasticsearch -y (or) sudo install elasticsearch -y if you are not a root user then
+             provide sudo in front of the command.
+
+        4. once the installation is done the important thing we need to do is copy and paste the security autoconfiguration
+            information.
+
+        5. systemctl daemon-reload
+        6. systemctl enable elasticsearch
+        7. systemctl start elasticsearch
+        8. once its started now give netstat -intp to check the port number
+             the tcp6  contain the default port number of elastic search
+
+        9. once the above things are completed now install kibana using the below command
+                dnf install kibana -y
+
+        10. once kibana installation is done now provide the below command
+              systemctl enable kibana
+              systemctl start kibana
+
+        11. now give netstat -intp command to check the kibana, the kibana(tcp) is starting with some port number, now
+             the kibana need to talk to the elastic search.now if we check the port number of kibana it listing on the
+             localhost port number only it is not accessible to the outside world. now some where in the kibana configuration
+             vim /etc/kibana/kibana.yml file in that file if we see the server host is connected to localhost.
+           Now in place of "localhost" give these port number value "0.0.0.0" and save it
+
+        12. Once the above thing is completed now restart the kibana
+              systemctl restart kibana
+
+        13. to check the logs provide the below command
+             tail -f /var/log/kibana/kibana.log  here -f will follow the log.
+
+        14. Now provide the netstat -inp and check the port number of tcp which is the beginning one.
+
+        15. now take the ip address long with port number of tcp kibana and provide in the browser.it will open a page
+            with configure elastic to get started.
+              example: 18.208.180.218:5601 here 5601 is port number of kibana
+
+        16. now go the place where you copied and pasted the security autoconfiguration information and copy the generate
+            enrollment token for kibana instance command past it in the shell command line. now it provide a data copy
+            the data and paste it in the configuration page and select configure elastic once you selected it will open a
+            page and ask to enter the verification code.
+
+        17. To get the verification we have to provide the command in the shell that is present in the verification page.
+
+        18. Now if you give that command it won't open anything so what we can do is first find the verification code file
+             find / -name kibana-verification-code it will give you the file name.
+
+        19. Now copy the file name and paste it in the shell command and it will give a verification code and give that
+            verification code in the verified configuration page.
+
+        20. Once the above thing is done now it will open elastic page and provide the credentials, you can find the
+            username and password credentials in the doc which you have copied and pasted the things after installing.
