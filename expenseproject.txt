@@ -1,0 +1,4 @@
+In Expense project we are shipping frontend to elastic search.
+      1. login in to the frontend server
+      2. provide sudo -i to connect for the root user
+      3.
