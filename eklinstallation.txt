@@ -85,7 +85,7 @@ Now we see how to setup elk through Automation
         5. systemctl daemon-reload
         6. systemctl enable elasticsearch
         7. systemctl start elasticsearch
-        8. once its started now give netstat -intp to check the port number
+        8. once its started now give netstat -lntp to check the port number
              the tcp6  contain the default port number of elastic search
 
         9. once the above things are completed now install kibana using the below command
@@ -95,7 +95,7 @@ Now we see how to setup elk through Automation
               systemctl enable kibana
               systemctl start kibana
 
-        11. now give netstat -intp command to check the kibana, the kibana(tcp) is starting with some port number, now
+        11. now give netstat -lntp command to check the kibana, the kibana(tcp) is starting with some port number, now
              the kibana need to talk to the elastic search.now if we check the port number of kibana it listing on the
              localhost port number only it is not accessible to the outside world. now some where in the kibana configuration
              vim /etc/kibana/kibana.yml file in that file if we see the server host is connected to localhost.
